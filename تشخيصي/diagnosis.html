@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفحص الطبي الذكي - تشخيصي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00e5ff;
+            --dark-bg: #0a192f;
+            --glass: rgba(255, 255, 255, 0.07);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9)), url('images/ai.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .diag-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(87, 193, 255, 0.2);
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            color: var(--neon-blue);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #57c1ff;
+            font-size: 18px;
+            margin: 25px 0 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 5px;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Cairo';
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--neon-blue);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-analyze {
+            width: 100%;
+            padding: 16px;
+            margin-top: 30px;
+            border-radius: 15px;
+            border: none;
+            background: linear-gradient(45deg, #00a3da, #57c1ff);
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+
+        .btn-analyze:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(87, 193, 255, 0.4);
+        }
+
+        .hint {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 500px) {
+            .grid-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="diag-card">
+        <h2>🩺 نظام الفحص والتشخيص الذكي</h2>
+
+        <form id="diagForm">
+            <div class="section-title">📊 العلامات الحيوية (اختياري)</div>
+            <div class="grid-inputs">
+                <div class="form-group">
+                    <label>درجة الحرارة (C°)</label>
+                    <input type="number" id="temp" step="0.1" placeholder="مثلاً 37.2">
+                </div>
+                <div class="form-group">
+                    <label>ضغط الدم</label>
+                    <input type="text" id="bp" placeholder="مثلاً 120/80">
+                </div>
+                <div class="form-group">
+                    <label>مستوى السكر</label>
+                    <input type="number" id="sugar" placeholder="mg/dL">
+                </div>
+                <div class="form-group">
+                    <label>معدل النبض</label>
+                    <input type="number" id="pulse" placeholder="نبضة/دقيقة">
+                    <p class="hint">يمكنك معرفته من ساعتك الذكية</p>
+                </div>
+            </div>
+
+            <div class="section-title">🤒 شكوى المريض</div>
+
+            <div class="form-group">
+                <label>نوع العرض الأساسي</label>
+                <select id="mainSymptom" required>
+                    <option value="">اختر التصنيف الأقرب لحالتك...</option>
+                    <option value="respiratory">جهاز تنفسي (كحة، ضيق تنفس)</option>
+                    <option value="neurological">جهاز عصبي (صداع، دوار)</option>
+                    <option value="digestive">جهاز هضمي (آلام معدة، قولون)</option>
+                    <option value="general">إرهاق عام / آلام عضلات</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>صف ما تشعر به بالتفصيل (وصف حر)</label>
+                <textarea id="userDescription" rows="4" placeholder="اكتب أعراضك بكلماتك الخاصة..."></textarea>
+            </div>
+
+            <div class="grid-inputs">
+                <div class="form-group">
+                    <label>مدة العرض</label>
+                    <select id="duration">
+                        <option value="1">أقل من 24 ساعة</option>
+                        <option value="3">من 2 إلى 3 أيام</option>
+                        <option value="7">أسبوع أو أكثر</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>شدة الألم (1-10)</label>
+                    <input type="number" id="severity" min="1" max="10" value="5">
+                </div>
+            </div>
+
+            <button type="button" class="btn-analyze" onclick="processDiagnosis()">بدء التحليل الفوري</button>
+        </form>
+    </div>
+
+    <script>
+        function processDiagnosis() {
+            // جلب القيم من العناصر
+            const temp = document.getElementById('temp').value || "--";
+            const bp = document.getElementById('bp').value || "--";
+            const pulse = document.getElementById('pulse').value || "--";
+            const symptom = document.getElementById('mainSymptom').value;
+            const description = document.getElementById('userDescription').value;
+            const severity = document.getElementById('severity').value;
+
+            // منطق تشخيصي تجريبي
+            let diagnosisText = "";
+            const tempVal = parseFloat(temp);
+
+            if (tempVal > 38.5) {
+                diagnosisText = "بناءً على ارتفاع درجة حرارتك (" + temp + ")، قد يكون هناك التهاب نشط. يرجى الراحة واستشارة طبيب.";
+            } else if (symptom === "respiratory") {
+                diagnosisText = "الأعراض التنفسية مع شدة ألم " + severity + "/10 تتطلب تهوية جيدة ومراقبة مستوى الأكسجين.";
+            } else if (symptom === "neurological") {
+                diagnosisText = "الصداع أو الدوار قد يكون ناتجاً عن إجهاد أو تذبذب في ضغط الدم (" + bp + ").";
+            } else {
+                diagnosisText = "تحليلك الأولي يشير إلى حالة مستقرة. يرجى متابعة النصائح الصحية المرفقة.";
+            }
+
+            // إضافة الوصف الحر للنتيجة إذا كتبه المريض
+            if (description) {
+                diagnosisText += "\n\n(ملاحظة إضافية بناءً على وصفك: " + description + ")";
+            }
+
+            // تخزين البيانات في المتصفح ليقرأها الموقع كله بنفس الأسماء
+            localStorage.setItem('finalDiagnosis', diagnosisText);
+            localStorage.setItem('userTemp', temp);
+            localStorage.setItem('userBP', bp);
+            localStorage.setItem('userPulse', pulse);
+
+            // الانتقال لصفحة النتائج
+            window.location.href = 'tips.html';
+        }
+    </script>
+</body>
+
+</html>
